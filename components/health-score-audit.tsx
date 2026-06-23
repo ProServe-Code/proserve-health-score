@@ -184,112 +184,152 @@ function Intro({
   totalQuestions: number
   onStart: () => void
 }) {
+  const [error, setError] = useState("")
+  const formRef = useRef<HTMLFormElement>(null)
+  const nameInputRef = useRef<HTMLInputElement>(null)
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault()
+    if (!name.trim()) {
+      setError("Please enter your first name.")
+      nameInputRef.current?.focus()
+      return
+    }
+    if (!club.trim()) {
+      setError("Please enter your club name.")
+      return
+    }
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+    if (!isEmailValid) {
+      setError("Please enter a valid email address.")
+      return
+    }
+    setError("")
+    onStart()
+  }
+
+  const handleScrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+    setTimeout(() => {
+      nameInputRef.current?.focus()
+    }, 500)
+  }
+
   return (
     <main style={styles.introWrap} className="fade-up">
-      <div style={styles.introGrid} className="intro-grid">
-        <div>
-          <h1 style={styles.h1}>
-            Discover your
-            <br />
-            <span style={styles.h1blue}>racquet club&apos;s</span>
-            <br />
-            <span style={styles.h1mark}>health score</span>
-          </h1>
-          <p style={styles.lede}>
-            Find out where your club is losing time, revenue, and members — and
-            the one area that, fixed first, unlocks the rest.
-          </p>
+      <section style={styles.hero}>
+        <div style={styles.kicker}>FOR PICKLEBALL & RACQUET CLUB OWNERS</div>
+        <h1 style={styles.h1}>
+          Pickleball is now a <span style={styles.h1mark}>$1B industry.</span>
+          <br />
+          So why isn&apos;t <span style={styles.h1blue}>your club</span> cashing
+          in?
+        </h1>
+        <p style={styles.sub}>
+          Pickleball is booming. Your club should be too. Take the 5-minute
+          Racquet Club Health Score and find out exactly where the money&apos;s
+          leaking — and the one fix that unlocks the rest.
+        </p>
 
-          <div style={styles.introCard}>
-            <div style={styles.introCardRow}>
-              <label style={styles.field}>
-                <span style={styles.fieldLabel}>Your name</span>
-                <input
-                  style={styles.input}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="First name"
-                />
-              </label>
-              <label style={styles.field}>
-                <span style={styles.fieldLabel}>Club name</span>
-                <input
-                  style={styles.input}
-                  value={club}
-                  onChange={(e) => setClub(e.target.value)}
-                  placeholder="Your facility"
-                />
-              </label>
-            </div>
-            <label style={styles.field}>
-              <span style={styles.fieldLabel}>Email address</span>
+        <form onSubmit={handleSubmit} style={styles.formCard} ref={formRef}>
+          <div className="form-grid">
+            <div>
+              <label style={styles.fieldLabel}>First Name</label>
               <input
+                ref={nameInputRef}
                 style={styles.input}
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@club.com"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="First name"
               />
-            </label>
-            <button style={styles.cta} onClick={onStart} className="cta-btn">
-              Take the test&nbsp;&nbsp;→
-            </button>
-            <div style={styles.startMeta}>
-              {totalQuestions} questions · 5 minutes · Email required
-            </div>
-          </div>
-        </div>
-
-        <div style={styles.previewCard}>
-          <div style={styles.previewTag}>SAMPLE RESULT</div>
-          <div style={styles.previewScoreRow}>
-            <div style={styles.previewRing}>
-              <svg width="78" height="78" viewBox="0 0 78 78">
-                <circle cx="39" cy="39" r="32" fill="none" stroke="#e8edf5" strokeWidth="7" />
-                <circle
-                  cx="39"
-                  cy="39"
-                  r="32"
-                  fill="none"
-                  stroke="#2563eb"
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeDasharray={2 * Math.PI * 32}
-                  strokeDashoffset={2 * Math.PI * 32 * (1 - 0.62)}
-                  transform="rotate(-90 39 39)"
-                />
-                <text x="39" y="44" textAnchor="middle" fontSize="22" fontWeight="800" fill="#0c1722" fontFamily="Georgia, serif">62</text>
-              </svg>
             </div>
             <div>
-              <div style={styles.previewVerdict}>Solid, With Leaks</div>
-              <div style={styles.previewVerdictSub}>
-                The bones are there — money&apos;s leaking through a few gaps.
-              </div>
+              <label style={styles.fieldLabel}>Club Name</label>
+              <input
+                style={styles.input}
+                value={club}
+                onChange={(e) => setClub(e.target.value)}
+                placeholder="Your facility"
+              />
             </div>
           </div>
+          <div style={{ marginTop: 12 }}>
+            <label style={styles.fieldLabel}>Email Address</label>
+            <input
+              style={styles.input}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@yourclub.com"
+            />
+          </div>
+          {error && <div style={styles.errorText}>{error}</div>}
+          <button type="submit" style={styles.ctaButton} className="cta-btn">
+            Get your Health Score&nbsp;&nbsp;→
+          </button>
+          <div style={styles.ctaMeta}>
+            {totalQuestions} questions · 5 minutes · No call required
+          </div>
+        </form>
+      </section>
 
-          <div style={styles.previewDivider} />
-          <div style={styles.previewRankLabel}>WHERE IT&apos;S LEAKING</div>
-          {PREVIEW.map((p) => (
-            <div key={p.name} style={styles.previewRow}>
-              <span style={{ ...styles.previewDot, background: p.color }} />
-              <span style={styles.previewName}>{p.name}</span>
-              <div style={styles.previewBarTrack}>
-                <div
-                  style={{
-                    ...styles.previewBarFill,
-                    width: `${p.pct + 40}%`,
-                    background: p.color,
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+      <section style={styles.bullets}>
+        <Bullet
+          num="01"
+          title="5 minutes, not 5 hours"
+          text="Twenty-four questions across the six systems that decide whether your club runs on you or runs on its own. Built for owners who don't have time for another long-form thing."
+        />
+        <Bullet
+          num="02"
+          title="Built for racquet clubs specifically"
+          text="Not generic small-business advice. The diagnostic is tuned to how pickleball and tennis clubs actually make money — court yield, off-peak monetization, program design, member lifecycle, the works."
+        />
+        <Bullet
+          num="03"
+          title="Just the read. No call. No pitch."
+          text="You get a score, an area-by-area breakdown, and a written diagnosis the moment you finish. Nothing to schedule, nothing to sit through. If you want help after, the door's open. If not, you've got a clearer map either way."
+        />
+      </section>
+
+      <section style={styles.proofStrip}>
+        <div style={styles.proofTag}>WHO IT&apos;S FOR</div>
+        <div style={styles.proofRow}>
+          <div style={styles.proofItem}>Pickleball franchise owners</div>
+          <div style={styles.proofDot}>·</div>
+          <div style={styles.proofItem}>Independent racquet clubs</div>
+          <div style={styles.proofDot}>·</div>
+          <div style={styles.proofItem}>Tennis &amp; multi-sport facilities</div>
+          <div style={styles.proofDot}>·</div>
+          <div style={styles.proofItem}>Multi-location operators</div>
         </div>
-      </div>
+      </section>
+
+      <section style={styles.bottomCtaWrap}>
+        <button
+          style={{ ...styles.ctaButton, width: "auto" }}
+          className="cta-btn"
+          onClick={handleScrollToForm}
+          type="button"
+        >
+          Get your Health Score&nbsp;&nbsp;→
+        </button>
+        <div style={styles.ctaMeta}>
+          Built by Mike Manzella · 20+ years running racquet clubs
+        </div>
+      </section>
     </main>
+  )
+}
+
+function Bullet({ num, title, text }: { num: string; title: string; text: string }) {
+  return (
+    <div style={styles.bulletItem}>
+      <div style={styles.bulletNum}>{num}</div>
+      <div>
+        <div style={styles.bulletTitle}>{title}</div>
+        <div style={styles.bulletText}>{text}</div>
+      </div>
+    </div>
   )
 }
 
@@ -570,8 +610,17 @@ const css = `
 .scale-btn{transition:transform .12s ease, background .15s ease, border-color .15s ease, color .15s ease;}
 .scale-btn:hover{transform:translateY(-2px);border-color:var(--blue);}
 input:focus{outline:none;border-color:var(--blue)!important;box-shadow:0 0 0 3px rgba(37,99,235,.12);}
-@media (max-width:720px){
-  .intro-grid{grid-template-columns:1fr!important;}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 580px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:720px) {
   .score-hero{flex-direction:column!important;text-align:center!important;align-items:center!important;}
 }
 `
@@ -585,7 +634,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "0 20px 56px",
   },
   header: {
-    maxWidth: 940,
+    maxWidth: 880,
     margin: "0 auto",
     display: "flex",
     alignItems: "center",
@@ -629,48 +678,58 @@ const styles: Record<string, React.CSSProperties> = {
     transition: "width .4s ease",
   },
 
-  introWrap: { maxWidth: 940, margin: "0 auto", paddingTop: 30 },
-  introGrid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: 44,
-    alignItems: "center",
+  introWrap: { maxWidth: 880, margin: "0 auto" },
+  hero: { paddingTop: 56, paddingBottom: 40, textAlign: "center" },
+  kicker: {
+    color: "var(--blue)",
+    fontSize: 12.5,
+    fontWeight: 700,
+    letterSpacing: 2.5,
+    marginBottom: 24,
   },
   h1: {
     fontWeight: 800,
-    fontSize: "3.1rem",
-    lineHeight: 1.04,
-    letterSpacing: -1.5,
-    margin: "0 0 20px",
+    fontSize: "3.4rem",
+    lineHeight: 1.06,
+    letterSpacing: -1.6,
+    margin: "0 auto 22px",
+    maxWidth: 760,
   },
-  h1blue: { color: "var(--blue)" },
   h1mark: {
     background:
       "linear-gradient(180deg, transparent 58%, var(--yellow) 58%, var(--yellow) 92%, transparent 92%)",
     paddingRight: 4,
   },
-  lede: {
+  h1blue: { color: "var(--blue)" },
+  sub: {
     color: "var(--ink-soft)",
-    fontSize: 16.5,
-    lineHeight: 1.6,
-    maxWidth: 420,
-    margin: 0,
+    fontSize: 18,
+    lineHeight: 1.55,
+    maxWidth: 580,
+    margin: "0 auto 36px",
   },
-  introCard: {
+  formCard: {
+    maxWidth: 540,
+    margin: "0 auto 40px",
     background: "var(--surface)",
     border: "1px solid var(--line)",
-    borderRadius: 18,
-    padding: 22,
-    marginTop: 28,
-    boxShadow: "0 8px 30px rgba(12,23,34,.06)",
+    borderRadius: 20,
+    padding: "30px 32px",
+    boxShadow: "0 10px 35px rgba(12,23,34,.05)",
     display: "flex",
     flexDirection: "column",
     gap: 16,
+    textAlign: "left",
   },
-  introCardRow: { display: "flex", gap: 12 },
-  field: { display: "flex", flexDirection: "column", gap: 7, flex: 1 },
-  fieldLabel: { fontSize: 12.5, color: "var(--ink-soft)", fontWeight: 600 },
+  fieldLabel: {
+    fontSize: 12.5,
+    color: "var(--ink-soft)",
+    fontWeight: 600,
+    marginBottom: 6,
+    display: "block",
+  },
   input: {
+    width: "100%",
     background: "#fff",
     border: "1px solid var(--line)",
     borderRadius: 11,
@@ -680,75 +739,91 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "var(--font)",
     transition: "border-color .15s ease, box-shadow .15s ease",
   },
-  cta: {
+  ctaButton: {
     background: "var(--blue)",
     color: "#fff",
     border: "none",
     borderRadius: 99,
-    padding: "14px 26px",
-    fontSize: 15.5,
+    padding: "16px 32px",
+    fontSize: 16.5,
     fontWeight: 700,
     fontFamily: "var(--font)",
     cursor: "pointer",
-    alignSelf: "flex-start",
+    textAlign: "center",
+    boxShadow: "0 8px 22px rgba(37,99,235,.22)",
+    marginTop: 8,
+    display: "block",
+    width: "100%",
   },
-  ctaDisabled: { background: "#c3ccd8", color: "#fff", cursor: "not-allowed" },
-  startMeta: { fontSize: 13, color: "var(--hint)", fontWeight: 500 },
-
-  previewCard: {
-    background: "var(--surface)",
-    border: "1px solid #dce4ef",
-    borderRadius: 20,
-    padding: 26,
-    boxShadow: "0 18px 50px rgba(12,23,34,.10)",
-    position: "relative",
-  },
-  previewTag: {
-    position: "absolute",
-    top: -12,
-    left: 24,
-    background: "var(--yellow)",
-    color: "#5c4a00",
-    fontSize: 11,
-    fontWeight: 800,
-    letterSpacing: 1,
-    padding: "5px 12px",
-    borderRadius: 99,
-  },
-  previewScoreRow: { display: "flex", alignItems: "center", gap: 16, marginTop: 8 },
-  previewRing: { flexShrink: 0 },
-  previewVerdict: { fontWeight: 800, fontSize: 18, color: "var(--ink)" },
-  previewVerdictSub: {
+  ctaMeta: { color: "var(--hint)", fontSize: 13.5, fontWeight: 500, textAlign: "center", marginTop: 6 },
+  errorText: {
+    color: "#dc2626",
     fontSize: 13,
-    color: "var(--ink-soft)",
-    marginTop: 3,
-    lineHeight: 1.45,
+    textAlign: "center",
+    fontWeight: 600,
+    marginTop: 4,
   },
-  previewDivider: { height: 1, background: "var(--line)", margin: "20px 0 16px" },
-  previewRankLabel: {
+  bullets: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gap: 18,
+    marginTop: 24,
+    marginBottom: 50,
+  },
+  bulletItem: {
+    background: "var(--surface)",
+    border: "1px solid var(--line)",
+    borderRadius: 16,
+    padding: "22px 22px 20px",
+    boxShadow: "0 2px 10px rgba(12,23,34,.03)",
+  },
+  bulletNum: {
+    color: "var(--blue)",
+    fontSize: 12.5,
+    fontWeight: 800,
+    letterSpacing: 1.5,
+    marginBottom: 10,
+    fontFamily: "Georgia, serif",
+  },
+  bulletTitle: {
+    fontWeight: 800,
+    fontSize: 16,
+    marginBottom: 8,
+    color: "var(--ink)",
+  },
+  bulletText: { color: "var(--ink-soft)", fontSize: 14.5, lineHeight: 1.55 },
+  proofStrip: {
+    background: "var(--surface)",
+    border: "1px solid var(--line)",
+    borderRadius: 16,
+    padding: "20px 26px",
+    marginBottom: 40,
+    textAlign: "center",
+  },
+  proofTag: {
+    color: "var(--hint)",
     fontSize: 11,
     fontWeight: 700,
-    letterSpacing: 1.5,
-    color: "var(--hint)",
-    textAlign: "center",
-    marginBottom: 14,
+    letterSpacing: 2,
+    marginBottom: 12,
   },
-  previewRow: { display: "flex", alignItems: "center", gap: 10, marginBottom: 11 },
-  previewDot: { width: 9, height: 9, borderRadius: 99, flexShrink: 0 },
-  previewName: {
-    fontSize: 13.5,
-    color: "var(--ink)",
-    flex: "0 0 130px",
-    fontWeight: 500,
+  proofRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 12,
+    rowGap: 8,
   },
-  previewBarTrack: {
-    flex: 1,
-    height: 8,
-    background: "#eef2f8",
-    borderRadius: 99,
-    overflow: "hidden",
+  proofItem: { fontWeight: 600, fontSize: 14, color: "var(--ink)" },
+  proofDot: { color: "var(--hint)", fontWeight: 700 },
+  bottomCtaWrap: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 12,
+    paddingTop: 8,
   },
-  previewBarFill: { height: "100%", borderRadius: 99 },
 
   quiz: { maxWidth: 720, margin: "0 auto", paddingTop: 6 },
   sectionNav: {
@@ -762,7 +837,9 @@ const styles: Record<string, React.CSSProperties> = {
     width: 34,
     height: 34,
     borderRadius: 10,
-    border: "1px solid var(--line)",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "var(--line)",
     background: "var(--surface)",
     color: "var(--ink-soft)",
     fontWeight: 700,
@@ -797,7 +874,9 @@ const styles: Record<string, React.CSSProperties> = {
     flex: 1,
     padding: "14px 0",
     borderRadius: 11,
-    border: "1px solid var(--line)",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "var(--line)",
     background: "#f8fafc",
     color: "var(--ink)",
     fontWeight: 700,
@@ -871,7 +950,8 @@ const styles: Record<string, React.CSSProperties> = {
   scoreOutOf: { color: "var(--hint)", fontSize: "1.1rem", fontWeight: 600 },
   bandBadge: {
     display: "inline-block",
-    border: "1.5px solid",
+    borderWidth: 1.5,
+    borderStyle: "solid",
     borderRadius: 99,
     padding: "5px 14px",
     fontSize: 13,
