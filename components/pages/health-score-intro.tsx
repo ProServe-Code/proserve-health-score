@@ -31,8 +31,23 @@ export default function Intro({
       nameInputRef.current?.focus()
       return
     }
+    if (name.trim().length > 50) {
+      setError("First name cannot be more than 50 characters.")
+      nameInputRef.current?.focus()
+      return
+    }
+    const isNameValid = /^[a-zA-Z\s]+$/.test(name.trim())
+    if (!isNameValid) {
+      setError("First name cannot contain special characters or numbers.")
+      nameInputRef.current?.focus()
+      return
+    }
     if (!club.trim()) {
       setError("Please enter your club name.")
+      return
+    }
+    if (club.trim().length > 50) {
+      setError("Club name cannot be more than 50 characters.")
       return
     }
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
