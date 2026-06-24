@@ -174,7 +174,7 @@ export default function Intro({
 
 const styles: Record<string, React.CSSProperties> = {
   introWrap: { maxWidth: 880, margin: "0 auto" },
-  hero: { paddingTop: 56, paddingBottom: 40, textAlign: "center" },
+  hero: { paddingTop: 16, paddingBottom: 40, textAlign: "center" },
   kicker: {
     color: "var(--primary)",
     fontFamily:"var(--font-heading)",

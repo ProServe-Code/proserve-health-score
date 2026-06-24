@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useRef, useEffect } from "react"
+import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { HealthScoreProvider, useHealthScore } from "@/context/HealthScoreContext"
 
@@ -22,12 +23,8 @@ function AuditLayoutContent({ children }: { children: React.ReactNode }) {
       <style>{css}</style>
 
       <header style={styles.header}>
-        <div style={{ ...styles.brandRow, cursor: "pointer" }} onClick={() => router.push("/")}>
-          <div style={styles.logoMark}>PS</div>
-          <div>
-            <div style={styles.brandName}>ProServe</div>
-            <div style={styles.brandSub}>Racquet Club Ops &amp; Growth Audit</div>
-          </div>
+        <div style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+          <Image src="./logo.png" alt="" height={120} width={120}></Image>
         </div>
         {showProgress && (
           <div style={styles.progressWrap}>
@@ -78,10 +75,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "24px 0 18px",
     gap: 20,
   },
-  brandRow: { display: "flex", alignItems: "center", gap: 12 },
   logoMark: {
     width: 42,
     height: 42,
