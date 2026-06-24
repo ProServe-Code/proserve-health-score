@@ -1,12 +1,13 @@
 "use client"
 
 import React, { useRef, useEffect } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { HealthScoreProvider, useHealthScore } from "@/context/HealthScoreContext"
 
 function AuditLayoutContent({ children }: { children: React.ReactNode }) {
   const { answeredCount, totalQuestions } = useHealthScore()
   const pathname = usePathname()
+  const router = useRouter()
   const topRef = useRef<HTMLDivElement>(null)
 
   // Scroll to top on route change
@@ -21,7 +22,7 @@ function AuditLayoutContent({ children }: { children: React.ReactNode }) {
       <style>{css}</style>
 
       <header style={styles.header}>
-        <div style={styles.brandRow}>
+        <div style={{ ...styles.brandRow, cursor: "pointer" }} onClick={() => router.push("/")}>
           <div style={styles.logoMark}>PS</div>
           <div>
             <div style={styles.brandName}>ProServe</div>
@@ -65,9 +66,9 @@ export default function AuditLayout({ children }: { children: React.ReactNode })
 
 const styles: Record<string, React.CSSProperties> = {
   root: {
-    background: "var(--bg)",
-    color: "var(--ink)",
-    fontFamily: "var(--font)",
+    background: "var(--background)",
+    color: "var(--foreground)",
+    fontFamily: "var(--font-sans)",
     minHeight: "100vh",
     padding: "0 20px 56px",
   },
@@ -84,34 +85,34 @@ const styles: Record<string, React.CSSProperties> = {
   logoMark: {
     width: 42,
     height: 42,
-    borderRadius: 11,
-    background: "var(--blue)",
-    color: "#fff",
+    borderRadius: 8,
+    background: "var(--secondary)",
+    color: "var(--secondary-foreground)",
     display: "grid",
     placeItems: "center",
     fontWeight: 800,
-    fontFamily: "Georgia, serif",
+    fontFamily: "var(--font-heading)",
     fontSize: 18,
   },
-  brandName: { fontWeight: 800, fontSize: 18, lineHeight: 1, color: "var(--ink)" },
-  brandSub: { color: "var(--ink-soft)", fontSize: 12.5, marginTop: 3 },
+  brandName: { fontWeight: 800, fontSize: 18, lineHeight: 1, color: "var(--secondary)" },
+  brandSub: { color: "var(--body-color)", fontSize: 12.5, marginTop: 3 },
   progressWrap: { display: "flex", alignItems: "center", gap: 10, minWidth: 150 },
   progressLabel: {
     fontSize: 12,
-    color: "var(--ink-soft)",
+    color: "var(--body-color)",
     fontVariantNumeric: "tabular-nums",
     fontWeight: 600,
   },
   progressTrack: {
     flex: 1,
     height: 7,
-    background: "var(--line)",
+    background: "var(--border)",
     borderRadius: 99,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    background: "var(--blue)",
+    background: "var(--primary)",
     borderRadius: 99,
     transition: "width .4s ease",
   },
@@ -119,31 +120,30 @@ const styles: Record<string, React.CSSProperties> = {
     maxWidth: 720,
     margin: "46px auto 0",
     textAlign: "center",
-    color: "var(--hint)",
+    color: "var(--foreground)",
     fontSize: 12.5,
     lineHeight: 1.6,
     paddingTop: 22,
-    borderTop: "1px solid var(--line)",
+    borderTop: "0.5px solid var(--border)",
   },
-  footerBrand: { color: "var(--blue)", fontWeight: 700 },
+  footerBrand: { color: "var(--primary)", fontWeight: 700 },
 }
 
 const css = `
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 :root{
-  --ink:#0c1722; --ink-soft:#5a6b7c; --hint:#8493a5;
-  --blue:#2563eb; --blue-dk:#1e3a8a; --yellow:#facc15;
-  --bg:#f5f7fa; --surface:#ffffff; --line:#e4e9f0;
-  --font:'Plus Jakarta Sans',system-ui,sans-serif;
+  --ink:#474545; --ink-soft:#474545; --hint:#474545;
+  --blue:#00A19C; --blue-dk:#01070E; --yellow:#00A19C;
+  --bg:#FFFFFF; --surface:#FFFFFF; --line:#E5E0DF;
+  --font:var(--font-sans);
 }
 *{box-sizing:border-box;}
 .fade-up{animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 .cta-btn{transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;}
-.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.04);box-shadow:0 12px 28px rgba(37,99,235,.25);}
+.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.04);box-shadow:0 4px 14px rgba(0,161,156,.25);}
 .scale-btn{transition:transform .12s ease, background .15s ease, border-color .15s ease, color .15s ease;}
-.scale-btn:hover{transform:translateY(-2px);border-color:var(--blue);}
-input:focus{outline:none;border-color:var(--blue)!important;box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+.scale-btn:hover{transform:translateY(-2px);border-color:#00A19C;}
+input:focus{outline:none;border-color:#00A19C!important;box-shadow:0 0 0 3px rgba(0,161,156,.12);}
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
