@@ -11,6 +11,8 @@ export default function Quiz({
   sectionComplete,
   onFinish,
   scrollTop,
+  totalQuestions,
+  answeredCount,
 }: {
   activeSection: number
   setActiveSection: React.Dispatch<React.SetStateAction<number>>
@@ -19,13 +21,18 @@ export default function Quiz({
   sectionComplete: (s: (typeof SECTIONS)[number]) => boolean
   onFinish: () => void
   scrollTop: () => void
+  totalQuestions: number
+  answeredCount: number
 }) {
   const s = SECTIONS[activeSection]
   const isLast = activeSection === SECTIONS.length - 1
+  const isCompleted = totalQuestions === answeredCount
   const complete = sectionComplete(s)
 
+
   const next = () => {
-    if (isLast) onFinish()
+    if(isLast && !isCompleted) { return }
+    if (isCompleted && isLast) onFinish()
     else {
       setActiveSection((i) => i + 1)
       scrollTop()
@@ -106,10 +113,10 @@ export default function Quiz({
           ← Back
         </button>
         <button
-          style={{ ...styles.cta, ...(complete ? {} : styles.ctaDisabled) }}
+          style={{ ...styles.cta, ...( !complete || (isLast && !isCompleted) ? styles.ctaDisabled : {}) }}
           onClick={next}
-          disabled={!complete}
-          className={complete ? "cta-btn" : ""}
+          disabled={!complete || (isLast && !isCompleted)}
+          className={(isLast && !isCompleted) || complete ? "cta-btn" : ""}
         >
           {isLast ? "See my Health Score →" : "Next area →"}
         </button>
@@ -217,4 +224,19 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "var(--font)",
   },
   helperNote: { color: "var(--ink-soft)", fontSize: 13, textAlign: "center", marginTop: 14 },
+  cta: {
+    background: "var(--blue)",
+    color: "#fff",
+    border: "none",
+    borderRadius: 99,
+    padding: "13px 26px",
+    fontSize: 15,
+    fontWeight: 700,
+    cursor: "pointer",
+    fontFamily: "var(--font)",
+  },
+  ctaDisabled: {
+    opacity: 0.5,
+    cursor: "not-allowed",
+  },
 }

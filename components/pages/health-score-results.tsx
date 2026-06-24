@@ -98,9 +98,15 @@ export default function Results({
             "This is the same diagnostic I run with the owners I work with across the country. On a quick call I'll walk through your results and show you exactly what I'd fix first — no pitch, just the read."
           }
         </p>
-        <button style={styles.ctaWhite} className="cta-btn">
+        <a
+          href="https://calendly.com/mike-proservesolutions/club-health-score-diagnostic"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...styles.ctaWhite, display: "inline-block", textDecoration: "none" }}
+          className="cta-btn"
+        >
           Book a call with Mike →
-        </button>
+        </a>
         <button style={styles.restartBtn} onClick={onRestart}>
           Retake the audit
         </button>
