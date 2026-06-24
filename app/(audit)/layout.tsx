@@ -132,7 +132,7 @@ const styles: Record<string, React.CSSProperties> = {
 const css = `
 :root{
   --ink:#474545; --ink-soft:#474545; --hint:#474545;
-  --blue:#00A19C; --blue-dk:#01070E; --yellow:#00A19C;
+  --blue:#00A19C; --blue-dk:#01070E; --yellow:#facc15;
   --bg:#FFFFFF; --surface:#FFFFFF; --line:#E5E0DF;
   --font:var(--font-sans);
 }

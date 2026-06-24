@@ -195,7 +195,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   h1mark: {
     background:
-      "linear-gradient(180deg, transparent 58%, var(--primary) 58%, var(--primary) 92%, transparent 92%)",
+      "linear-gradient(180deg, transparent 58%, var(--yellow) 58%, var(--yellow) 92%, transparent 92%)",
     paddingRight: 4,
   },
   h1blue: { color: "var(--primary)" },
