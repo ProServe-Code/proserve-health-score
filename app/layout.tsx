@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'ProServe Health Score — Racquet Club Ops & Growth Audit',
   description:
-    'A 5-minute diagnostic for racquet club owners and franchisees. Find out where your club is losing time, revenue, and members.',
+    'A 3-minute diagnostic for racquet club owners and franchisees. Find out where your club is losing time, revenue, and members.',
   generator: 'v0.app',
   icons: {
     icon: [

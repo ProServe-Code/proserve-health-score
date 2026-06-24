@@ -56,13 +56,13 @@ export default function Intro({
       <section style={styles.hero}>
         <div style={styles.kicker}>FOR PICKLEBALL & RACQUET CLUB OWNERS</div>
         <h1 style={styles.h1}>
-          Pickleball is now a <span style={styles.h1mark}>$1B industry.</span>
+          Pickleball is now a <span style={styles.h1mark}>$3B+ industry.</span>
           <br />
           So why isn&apos;t <span style={styles.h1blue}>your club</span> cashing
           in?
         </h1>
         <p style={styles.sub}>
-          Pickleball is booming. Your club should be too. Take the 5-minute
+          Pickleball is booming. Your club should be too. Take the 3-minute
           Racquet Club Health Score and find out exactly where the money&apos;s
           leaking — and the one fix that unlocks the rest.
         </p>
@@ -104,7 +104,7 @@ export default function Intro({
             Get your Health Score&nbsp;&nbsp;→
           </button>
           <div style={styles.ctaMeta}>
-            {totalQuestions} questions · 5 minutes · No call required
+            {totalQuestions} questions · 3 minutes · No call required
           </div>
         </form>
       </section>
@@ -112,7 +112,7 @@ export default function Intro({
       <section style={styles.bullets}>
         <Bullet
           num="01"
-          title="5 minutes, not 5 hours"
+          title="3 minutes, not 5 hours"
           text="Twenty-four questions across the six systems that decide whether your club runs on you or runs on its own. Built for owners who don't have time for another long-form thing."
         />
         <Bullet
