@@ -1,5 +1,15 @@
 import React, { useState, useRef } from "react"
 import Bullet from "../ui/bullet"
+interface IntroProps {
+  name: string
+  club: string
+  email: string
+  setName: (v: string) => void
+  setClub: (v: string) => void
+  setEmail: (v: string) => void
+  totalQuestions: number
+  onStart: () => void
+}
 
 export default function Intro({
   name,
@@ -10,16 +20,7 @@ export default function Intro({
   setEmail,
   totalQuestions,
   onStart,
-}: {
-  name: string
-  club: string
-  email: string
-  setName: (v: string) => void
-  setClub: (v: string) => void
-  setEmail: (v: string) => void
-  totalQuestions: number
-  onStart: () => void
-}) {
+}: IntroProps) {
   const [error, setError] = useState("")
   const formRef = useRef<HTMLFormElement>(null)
   const nameInputRef = useRef<HTMLInputElement>(null)
@@ -90,7 +91,7 @@ export default function Intro({
                 ref={nameInputRef}
                 style={styles.input}
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase())}
                 placeholder="First name"
               />
             </div>
@@ -99,7 +100,7 @@ export default function Intro({
               <input
                 style={styles.input}
                 value={club}
-                onChange={(e) => setClub(e.target.value)}
+                onChange={(e) => setClub(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase())}
                 placeholder="Your facility"
               />
             </div>

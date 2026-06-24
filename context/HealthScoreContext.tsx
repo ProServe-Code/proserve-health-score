@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState, useMemo } from "react"
+import React, { createContext, useContext, useState, useMemo, useCallback } from "react"
 import { SECTIONS, WEIGHTS } from "@/constants/QuestionSections"
 
 type Answers = Record<string, number>
@@ -84,10 +84,13 @@ export function HealthScoreProvider({ children }: { children: React.ReactNode })
     }
   }, [answers])
 
-  const resetState = () => {
+  const resetState = useCallback(() => {
+    setName("")
+    setClub("")
+    setEmail("")
     setAnswers({})
     setActiveSection(0)
-  }
+  }, [])
 
   return (
     <HealthScoreContext.Provider

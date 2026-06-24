@@ -1,13 +1,17 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Intro from "@/components/pages/health-score-intro"
 import { useHealthScore } from "@/context/HealthScoreContext"
 
 export default function IntroPage() {
   const router = useRouter()
-  const { name, club, email, setName, setClub, setEmail, totalQuestions } = useHealthScore()
+  const { name, club, email, setName, setClub, setEmail, totalQuestions, resetState } = useHealthScore()
+
+  useEffect(() => {
+    resetState()
+  }, [resetState])
 
   const handleStart = async () => {
     try {

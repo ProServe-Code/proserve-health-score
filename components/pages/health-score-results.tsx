@@ -1,12 +1,7 @@
 import React from "react"
 import { bandFor } from "@/lib/utils"
-
-export default function Results({
-  name,
-  club,
-  results,
-  onRestart,
-}: {
+interface ResultsProps
+{
   name: string
   club: string
   results: {
@@ -16,7 +11,14 @@ export default function Results({
     strongest?: { id: string; name: string; pct: number }
   }
   onRestart: () => void
-}) {
+}
+
+export default function Results({
+  name,
+  club,
+  results,
+  onRestart,
+}: ResultsProps) {
   const band = bandFor(results.overall)
   const heading = club ? club : "Your club"
 

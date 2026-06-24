@@ -2,6 +2,17 @@ import React from "react"
 import { SCALE, SECTIONS } from "@/constants/QuestionSections"
 
 type Answers = Record<string, number>
+interface QuizProps {
+  activeSection: number
+  setActiveSection: React.Dispatch<React.SetStateAction<number>>
+  answers: Answers
+  setAnswer: (sid: string, qi: number, val: number) => void
+  sectionComplete: (s: (typeof SECTIONS)[number]) => boolean
+  onFinish: () => void
+  scrollTop: () => void
+  totalQuestions: number
+  answeredCount: number
+}
 
 export default function Quiz({
   activeSection,
@@ -13,17 +24,7 @@ export default function Quiz({
   scrollTop,
   totalQuestions,
   answeredCount,
-}: {
-  activeSection: number
-  setActiveSection: React.Dispatch<React.SetStateAction<number>>
-  answers: Answers
-  setAnswer: (sid: string, qi: number, val: number) => void
-  sectionComplete: (s: (typeof SECTIONS)[number]) => boolean
-  onFinish: () => void
-  scrollTop: () => void
-  totalQuestions: number
-  answeredCount: number
-}) {
+}: QuizProps) {
   const s = SECTIONS[activeSection]
   const isLast = activeSection === SECTIONS.length - 1
   const isCompleted = totalQuestions === answeredCount
