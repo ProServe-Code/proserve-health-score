@@ -8,7 +8,7 @@ interface IntroProps {
   setClub: (v: string) => void
   setEmail: (v: string) => void
   totalQuestions: number
-  onStart: () => void
+  onStart: () => void | Promise<void>
 }
 
 export default function Intro({
@@ -22,10 +22,11 @@ export default function Intro({
   onStart,
 }: IntroProps) {
   const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const nameInputRef = useRef<HTMLInputElement>(null)
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault()
     if (!name.trim()) {
       setError("Please enter your first name.")
@@ -57,7 +58,12 @@ export default function Intro({
       return
     }
     setError("")
-    onStart()
+    setIsSubmitting(true)
+    try {
+      await onStart()
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleScrollToForm = () => {
@@ -116,8 +122,8 @@ export default function Intro({
             />
           </div>
           {error && <div style={styles.errorText}>{error}</div>}
-          <button type="submit" style={styles.ctaButton} className="cta-btn">
-            Get your Health Score&nbsp;&nbsp;→
+          <button type="submit" style={{ ...styles.ctaButton, opacity: isSubmitting ? 0.7 : 1 }} className="cta-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Loading..." : <>Get your Health Score&nbsp;&nbsp;→</>}
           </button>
           <div style={styles.ctaMeta}>
             {totalQuestions} questions · 3 minutes · No call required
