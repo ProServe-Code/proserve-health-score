@@ -1,7 +1,6 @@
 import React from "react"
 import { bandFor } from "@/lib/utils"
-interface ResultsProps
-{
+interface ResultsProps {
   name: string
   club: string
   results: {
@@ -214,9 +213,10 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 13,
     padding: "13px 0",
     borderBottom: "0.5px solid var(--border)",
+    flexWrap: "wrap"
   },
   barLabel: { flex: "0 0 190px", fontSize: 14.5, fontWeight: 600, color: "var(--heading-color)" },
-  barTrack: { flex: 1, height: 9, background: "#E5E0DF", borderRadius: 99, overflow: "hidden" },
+  barTrack: { flex: 1, height: 9, minWidth: "200px", background: "#E5E0DF", borderRadius: 99 },
   barFill: { height: "100%", borderRadius: 99, transition: "width 1s cubic-bezier(.2,.8,.2,1)" },
   barPct: {
     flex: "0 0 42px",
