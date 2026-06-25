@@ -32,7 +32,7 @@ export default function Quiz({
 
 
   const next = () => {
-    if(isLast && !isCompleted) { return }
+    if (isLast && !isCompleted) { return }
     if (isCompleted && isLast) onFinish()
     else {
       setActiveSection((i) => i + 1)
@@ -86,7 +86,10 @@ export default function Quiz({
               {SCALE.map((n) => (
                 <button
                   key={n}
-                  onClick={() => setAnswer(s.id, qi, n)}
+                  onClick={() => {
+                    setAnswer(s.id, qi, n);
+                    window.scrollBy({ top: 200, behavior: "smooth" })
+                  }}
                   className="scale-btn"
                   style={{
                     ...styles.scaleBtn,
@@ -107,14 +110,14 @@ export default function Quiz({
 
       <div style={styles.quizNav}>
         <button
-          style={{ ...styles.ghostBtn, opacity: activeSection === 0 ? 0.4 : 1, ...(activeSection === 0 ? styles.ghostBtnDisabled: {}) }}
+          style={{ ...styles.ghostBtn, opacity: activeSection === 0 ? 0.4 : 1, ...(activeSection === 0 ? styles.ghostBtnDisabled : {}) }}
           onClick={prev}
           disabled={activeSection === 0}
         >
           ← Back
         </button>
         <button
-          style={{ ...styles.cta, ...( !complete || (isLast && !isCompleted) ? styles.ctaDisabled : {}) }}
+          style={{ ...styles.cta, ...(!complete || (isLast && !isCompleted) ? styles.ctaDisabled : {}) }}
           onClick={next}
           disabled={!complete || (isLast && !isCompleted)}
           className={(isLast && !isCompleted) || complete ? "cta-btn" : ""}
@@ -225,8 +228,8 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontFamily: "var(--font-sans)",
   },
-  ghostBtnDisabled:{
-    cursor:"not-allowed"
+  ghostBtnDisabled: {
+    cursor: "not-allowed"
   },
   helperNote: { color: "var(--foreground)", fontSize: 13, textAlign: "center", marginTop: 14, fontFamily: "var(--font-sans)" },
   cta: {
